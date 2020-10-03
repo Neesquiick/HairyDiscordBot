@@ -30,7 +30,6 @@ client.on('ready', () => {
 client.on('guildMemberAdd', async (member) => {
   let rolesToGive = member.guild.roles.cache.filter(role => role.name.toLowerCase().includes('-community-') || role.name.toLowerCase().includes('bürger'));
   await member.roles.add(rolesToGive);
-  member.send(stringtopf.welcome);
 });
 
 client.on('guildAdd', (guild) => {
