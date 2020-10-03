@@ -13,6 +13,18 @@ client.on('ready', () => {
     },
     status: `online`
   });
+  setInterval(() => {
+    let activities = client.user.presence.activities;
+    if (activities.size < 1 || activities[0].name !== `${client.users.cache.filter(user => !user.bot).size} ${stringtopf.status}}`) {
+      client.user.setPresence({
+        activity: {
+          name: `${client.users.cache.filter(user => !user.bot).size} ${stringtopf.status}`,
+          type: `WATCHING`
+        },
+        status: `online`
+      });
+    }
+  }, 300000);
 });
 
 client.on('guildMemberAdd', async (member) => {
@@ -25,7 +37,7 @@ client.on('guildAdd', (guild) => {
   guild.me.setNickname('Ibbelsee V2 | Bot');
   client.user.setPresence({
     activity: {
-      name: `${client.users.cache.filter(user => !user.bot).size} haarige Spieler`,
+      name: `${client.users.cache.filter(user => !user.bot).size} ${stringtopf.status}`,
       type: `WATCHING`
     },
     status: `online`
