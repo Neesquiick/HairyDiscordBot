@@ -9,7 +9,7 @@
 6. Create a pull request from said branch to the development branch of this repository
 
 ## Requirements
-- Node v12 or higher
+- Node.js v12 or higher
 - Latest version of NPM
-- Discord v12
-- JavaScript and Node knowledge
+- Latest version of Discord.js
+- JavaScript and Node.js knowledge
