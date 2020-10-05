@@ -1,6 +1,6 @@
 const discord = require("discord.js");
 const config = require("./config.json");
-const stringtopf = require("./stringtopf.json");
+const stringbucket = require("./stringbucket.json");
 const { TeamSpeak, QueryProtocol } = require('ts3-nodejs-library');
 
 const client = new discord.Client();
@@ -14,8 +14,9 @@ client.on('ready', () => {
     },
     status: `online`
   });
+  /* Do this stuff every 5 minutes. Lower == Ratelimit */
   setInterval(() => {
-    // Setze Status
+    // Set status
     let activities = client.user.presence.activities;
     if (activities.size < 1 || activities[0].name !== `${client.users.cache.filter(user => !user.bot).size} ${stringtopf.status}}`) {
       client.user.setPresence({
@@ -26,15 +27,15 @@ client.on('ready', () => {
         status: `online`
       });
     }
-    // Teamspeak Channel aktualisieren
+    // Refresh User Count channels
     TeamSpeak.connect({
       host: '193.70.49.219',
       protocol: QueryProtocol.RAW,
       queryport: 10011,
       serverport: 9987,
-      username: "node",
-      password: "gzm3wsUq",
-      nickname: "Discord Bot - Ibbelsee"
+      username: config.queryUsername,
+      password: config.queryPassword,
+      nickname: stringtopf.queryNickname
     }).then(async teamspeak => {
       const clients = await teamspeak.clientList({ clientType: 0 });
       let chT = client.channels.cache.find(channel => channel.id == "762729555122192384");
