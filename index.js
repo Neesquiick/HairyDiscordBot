@@ -33,13 +33,13 @@ client.on('ready', () => {
       queryport: 10011,
       serverport: 9987,
       username: "node",
-      password: "YLJKzcQu",
+      password: "gzm3wsUq",
       nickname: "Discord Bot - Ibbelsee"
     }).then(async teamspeak => {
       const clients = await teamspeak.clientList({ clientType: 0 });
       let chT = client.channels.cache.find(channel => channel.id == "762729555122192384");
       let chD = client.channels.cache.find(channel => channel.id == "762729035347525673");
-      chD.setName(`『 ${client.users.cache.filter(user => user.presence.status != "offline")} 』Discord`);
+      chD.setName(`『 ${client.users.cache.filter(user => user.presence.status != "offline").size} 』Discord`);
       chT.setName(`『 ${clients.length} 』Teamspeak`);
     }).catch(e => console.error(e))
   }, 300000);
