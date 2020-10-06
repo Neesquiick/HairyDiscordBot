@@ -1,5 +1,6 @@
 const discord = require("discord.js");
 const stringbucket = require("./stringbucket.json");
+require("dotenv").config();
 
 const client = new discord.Client();
 
@@ -38,4 +39,4 @@ client.on('guildAdd', (guild) => {
   });
 });
 
-client.login(require("./token.json").token);
+client.login(process.env.TOKEN);
