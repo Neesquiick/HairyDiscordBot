@@ -1,4 +1,4 @@
-# The official Discord Bot of Ibbelsee.net V2!
+# The official Hairy Discord Bot!
 
 ## How to contribute
 1. Fork this repository
