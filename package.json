@@ -1,13 +1,13 @@
 {
-  "name": "ibbelseebot",
-  "version": "1.0.0",
+  "name": "Hairy Discord Bot",
+  "version": "0.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Chewbacca",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.3.1",
