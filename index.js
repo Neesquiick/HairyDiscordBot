@@ -52,7 +52,7 @@ client.on('guildMemberAdd', async (member) => {
 });
 
 client.on('guildAdd', (guild) => {
-  guild.me.setNickname('Ibbelsee V2 | Bot');
+  guild.me.setNickname(`${guild.name} | Bot`);
   client.user.setPresence({
     activity: {
       name: `${client.users.cache.filter(user => !user.bot).size} ${stringtopf.status}`,
