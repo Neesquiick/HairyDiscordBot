@@ -3,12 +3,19 @@ const stringbucket = require("./stringbucket.json");
 const fs = require("fs");
 require("dotenv").config();
 
+const mongoose = require("mongoose");
+const GuildSettings = require("./settings.js");
+mongoose.connect(process.env.DB_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+
 const prefix = "?"; // Make prefix dynamic with database
 
 const client = new discord.Client();
 client.commands = new discord.Collection();
 
-const commandFiles = FS.readdirSync("./commands").filter(file => file.endsWith(".js"));
+const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith(".js"));
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
   client.commands.set(command.name, command);
