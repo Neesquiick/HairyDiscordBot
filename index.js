@@ -1,65 +1,71 @@
 const discord = require("discord.js");
-const config = require("./config.json");
 const stringbucket = require("./stringbucket.json");
-const { TeamSpeak, QueryProtocol } = require('ts3-nodejs-library');
+const fs = require("fs");
+require("dotenv").config();
+
+const prefix = "?"; // Make prefix dynamic with database
 
 const client = new discord.Client();
+client.commands = new discord.Collection();
+
+const commandFiles = FS.readdirSync("./commands").filter(file => file.endsWith(".js"));
+for (const file of commandFiles) {
+  const command = require(`./commands/${file}`);
+  client.commands.set(command.name, command);
+}
 
 client.on('ready', () => {
-  console.log('This bot is ready to share some hair!');
+  console.log('This bot is ready to share some hair! 🥞');
   client.user.setPresence({
     activity: {
-      name: `${client.users.cache.filter(user => !user.bot).size} ${stringtopf.status}`,
+      name: `${client.users.cache.filter(user => !user.bot).size} ${stringbucket.status}`,
       type: `WATCHING`
     },
     status: `online`
   });
-  /* Do this stuff every 5 minutes. Lower == Ratelimit */
   setInterval(() => {
     // Set status
     let activities = client.user.presence.activities;
-    if (activities.size < 1 || activities[0].name !== `${client.users.cache.filter(user => !user.bot).size} ${stringtopf.status}}`) {
+    if (activities.size < 1 || activities[0].name !== `${client.users.cache.filter(user => !user.bot).size} ${stringbucket.status}}`) {
       client.user.setPresence({
         activity: {
-          name: `${client.users.cache.filter(user => !user.bot).size} ${stringtopf.status}`,
+          name: `${client.users.cache.filter(user => !user.bot).size} ${stringbucket.status}`,
           type: `WATCHING`
         },
         status: `online`
       });
     }
-    // Refresh User Count channels
-    TeamSpeak.connect({
-      host: '193.70.49.219',
-      protocol: QueryProtocol.RAW,
-      queryport: 10011,
-      serverport: 9987,
-      username: config.queryUsername,
-      password: config.queryPassword,
-      nickname: stringtopf.queryNickname
-    }).then(async teamspeak => {
-      const clients = await teamspeak.clientList({ clientType: 0 });
-      let chT = client.channels.cache.find(channel => channel.id == "762729555122192384");
-      let chD = client.channels.cache.find(channel => channel.id == "762729035347525673");
-      chD.setName(`『 ${client.users.cache.filter(user => user.presence.status != "offline" && !user.bot).size} 』Discord`);
-      chT.setName(`『 ${clients.length} 』Teamspeak`);
-    }).catch(e => console.error(e))
   }, 300000);
-});
-
-client.on('guildMemberAdd', async (member) => {
-  let rolesToGive = member.guild.roles.cache.filter(role => role.name.toLowerCase().includes('-community-') || role.name.toLowerCase().includes('bürger'));
-  await member.roles.add(rolesToGive);
 });
 
 client.on('guildAdd', (guild) => {
   guild.me.setNickname(`${guild.name} | Bot`);
   client.user.setPresence({
     activity: {
-      name: `${client.users.cache.filter(user => !user.bot).size} ${stringtopf.status}`,
+      name: `${client.users.cache.filter(user => !user.bot).size} ${stringbucket.status}`,
       type: `WATCHING`
     },
     status: `online`
   });
 });
 
-client.login(config.token);
+client.on('message', (message) => {
+  // if the message author is a bot or the message didn't start with the prefix, ignore
+  // *or if the message was send in DMs
+  if (message.author.bot || !message.guild || !message.content.startsWith(prefix)) return;
+
+  const args = message.content.slice(prefix.length).trim().split(/ + /);
+  const command = args.shift().toLowerCase();
+
+  if (!client.commands.has(command)) return;
+
+  try {
+    client.commands.get(command).execute(message, args);
+  } catch (error) {
+    // Maybe send a nice and sexy emoji too
+    // let emoji = message.guild.emojis.cache.find(emoji => emoji.name.includes("pepechrist"));
+    message.reply(`sorry, but the owner of the bot managed to destroy the bot.`);
+  }
+})
+
+client.login(process.env.TOKEN);
