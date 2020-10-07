@@ -11,5 +11,5 @@
 ## Requirements
 - Node.js v12 or higher
 - Latest version of NPM
-- Latest version of Discord.js
+- Latest version of Discord.JS
 - JavaScript and Node.js knowledge
