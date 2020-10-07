@@ -56,18 +56,31 @@ client.on('guildAdd', (guild) => {
   });
 });
 
-client.on('message', (message) => {
+client.on('message', async (message) => {
   // if the message author is a bot or the message didn't start with the prefix, ignore
   // *or if the message was send in DMs
-  if (message.author.bot || !message.guild || !message.content.startsWith(prefix)) return;
+  if (message.author.bot || !message.guild) return;
 
-  const args = message.content.slice(prefix.length).trim().split(/ + /);
+  // Retrieving the guild settings from database.
+  var storedSettings = await GuildSettings.findOne({ gid: message.guild.id });
+  if (!storedSettings) {
+    // If there are no settings stored for this guild, we create them and try to retrieve them again.
+    const newSettings = new GuildSettings({
+      gid: message.guild.id
+    });
+    await newSettings.save().catch(()=>{});
+    storedSettings = await GuildSettings.findOne({ gid: message.guild.id });
+  }
+
+  if (!message.content.startsWith(storedSettings.prefix)) return;
+
+  const args = message.content.slice(storedSettings.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
 
   if (!client.commands.has(command)) return;
 
   try {
-    client.commands.get(command).execute(message, args);
+    client.commands.get(command).execute(message, args, storedSettings);
   } catch (error) {
     // Maybe send a nice and sexy emoji too
     // let emoji = message.guild.emojis.cache.find(emoji => emoji.name.includes("pepechrist"));
