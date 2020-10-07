@@ -10,9 +10,11 @@ mongoose.connect(process.env.DB_URL, {
   useUnifiedTopology: true
 });
 
-const prefix = "?"; // Make prefix dynamic with database
-
-const client = new discord.Client();
+const client = new discord.Client({
+  ws: {
+    intents: ['GUILD_MESSAGES', 'DIRECT_MESSAGES', 'GUILDS']
+  }
+});
 client.commands = new discord.Collection();
 
 const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith(".js"));
