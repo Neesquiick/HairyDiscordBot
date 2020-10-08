@@ -24,7 +24,7 @@ for (const file of commandFiles) {
 }
 
 client.on('ready', () => {
-  console.log('This Bot is ready to share some hair! 🥞');
+  console.log('This bot is ready to share some hair! 🥞');
   client.user.setPresence({
     activity: {
       name: `${client.users.cache.filter(user => !user.bot).size} ${stringbucket.status}`,
