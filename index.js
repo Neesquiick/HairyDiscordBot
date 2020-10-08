@@ -48,6 +48,7 @@ client.on('ready', () => {
 });
 
 client.on('guildAdd', (guild) => {
+  // Refresh the status when a user joins a guild.
   guild.me.setNickname(`${guild.name} | Bot`);
   client.user.setPresence({
     activity: {
