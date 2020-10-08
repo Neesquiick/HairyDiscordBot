@@ -12,7 +12,7 @@ mongoose.connect(process.env.DB_URL, {
 
 const client = new discord.Client({
   ws: {
-    intents: ['GUILD_MESSAGES', 'DIRECT_MESSAGES', 'GUILDS', 'GUILD_MEMBERS', 'GUILD_PRESENCES']
+    intents: ['GUILD_MESSAGES', 'GUILDS', 'GUILD_MEMBERS', 'GUILD_PRESENCES']
   }
 });
 client.commands = new discord.Collection();
