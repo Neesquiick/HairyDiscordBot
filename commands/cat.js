@@ -7,7 +7,6 @@ module.exports = {
 		const catFacts = require('get-cat-facts');
 		const randomCat = require('random-cat')
 		const result = await catFacts.random();
-		console.log(result);
 		let embed = new MessageEmbed()
 			.setDescription(result[0].text)
 			.setImage(randomCat.get({
