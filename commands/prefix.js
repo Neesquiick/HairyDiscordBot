@@ -2,6 +2,7 @@ module.exports = {
 	name: 'prefix',
 	description: 'Change the prefix.',
 	async execute(message, args, storedSettings) {
+    if (!message.member.permissions.has('ADMINISTRATOR')) return;
     if (args.length < 1 || args[0].length < 1) {
       let messageAsk = await message.reply('please enter the new prefix:');
       let filter = (msg => msg.author.id == message.author.id);
@@ -11,6 +12,7 @@ module.exports = {
         message.reply(`you changed the prefix to: ${storedSettings.prefix}`);
       }).catch(collected => {
         messageAsk.delete();
+        message.delete();
       });
     } else {
       storedSettings.prefix = args[0];
