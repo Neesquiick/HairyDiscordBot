@@ -24,7 +24,7 @@ for (const file of commandFiles) {
 }
 
 client.on('ready', () => {
-  console.log('The Bot is ready to share some hair! 🥞');
+  console.log('This Bot is ready to share some hair! 🥞');
   client.user.setPresence({
     activity: {
       name: `${client.users.cache.filter(user => !user.bot).size} ${stringbucket.status}`,
@@ -88,7 +88,6 @@ client.on('message', async (message) => {
     // let emoji = message.guild.emojis.cache.find(emoji => emoji.name.includes("pepechrist"));
     message.reply(`sorry, but the owner of the bot managed to destroy the bot.`);
   }
-
 })
 
 client.login(process.env.TOKEN);
