@@ -4,6 +4,8 @@ module.exports = {
 	name: 'avatar', 
 	description: 'Avatar-URL', 
 	execute(message, args) { 		     
-        message.reply(message.author.displayAvatarURL());
-        }
+		let embed = new MessageEmbed()
+			.setImage(message.author.displayAvatarURL());
+		message.reply(embed);
+    }
 }; 
