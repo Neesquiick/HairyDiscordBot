@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'prefix',
 	description: 'Change the prefix.',
-	async execute(message, args, storedSettings) {
+	async execute(client, message, args, storedSettings) {
     if (!message.member.permissions.has('ADMINISTRATOR')) return;
     if (args.length < 1 || args[0].length < 1) {
       let messageAsk = await message.reply('please enter the new prefix:');

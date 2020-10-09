@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'cat',
 	description: 'Sends random cat image!',
-	async execute(message, args) {
+	async execute(client, message, args) {
 		const catFacts = require('get-cat-facts');
 		const randomCat = require('random-cat')
 		const result = await catFacts.random();
