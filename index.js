@@ -83,7 +83,7 @@ client.on('message', async (message) => {
   if (!client.commands.has(command)) return;
 
   try {
-    client.commands.get(command).execute(message, args, storedSettings);
+    client.commands.get(command).execute(client, message, args, storedSettings);
   } catch (error) {
     // Maybe send a nice and sexy emoji too
     // let emoji = message.guild.emojis.cache.find(emoji => emoji.name.includes("pepechrist"));
