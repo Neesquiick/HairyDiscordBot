@@ -1,7 +1,9 @@
 const discord = require("discord.js");
 const stringbucket = require("./stringbucket.json");
 const fs = require("fs");
+const { join } = require('path');
 require("dotenv").config();
+const MusicClient = require('./src/struct/Client');
 
 const mongoose = require("mongoose");
 const GuildSettings = require("./settings.js");
@@ -10,11 +12,12 @@ mongoose.connect(process.env.DB_URL, {
   useUnifiedTopology: true
 });
 
-const client = new discord.Client({
+const client = new MusicClient({
   ws: {
     intents: ['GUILD_MESSAGES', 'GUILDS', 'GUILD_MEMBERS', 'GUILD_PRESENCES']
   }
 });
+
 client.commands = new discord.Collection();
 
 const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith(".js"));
@@ -81,6 +84,22 @@ client.on('message', async (message) => {
   const command = args.shift().toLowerCase();
 
   if (!client.commands.has(command)) return;
+
+  if (!client.cooldowns.has(command.name)) {
+		client.cooldowns.set(command.name, new discord.Collection());
+  }
+  const now = Date.now();
+	const timestamps = client.cooldowns.get(command.name);
+	const cooldownAmount = (command.cooldown || 3) * 1000;
+	if (timestamps.has(message.author.id)) {
+		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+		if (now < expirationTime) {
+			const timeLeft = (expirationTime - now) / 1000;
+			return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+		}
+	}
+	timestamps.set(message.author.id, now);
+	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
   try {
     client.commands.get(command).execute(client, message, args, storedSettings);
